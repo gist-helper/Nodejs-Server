@@ -38,14 +38,6 @@ for i in range(3, 13,2):
                        (mealDate.strftime('%Y-%m-%d')) + ",\n")
 
         jsonword = ""
-        # if j == 0:
-        #     jsonFile.write('\t\t' + '"kind_of_meal": "조식",\n')
-
-        #     jsonFile.write('\t\t' + '"menu": ')
-        #     for k in range(7, 17):
-        #         jsonword += (
-        #             replaceToJson(sh.cell(row=k, column=i).value) + " " +
-        #             replaceToJson(sh.cell(row=k, column=i + 1).value) + '\\n')
         if j == 0:
             jsonFile.write('\t\t' + '"kind_of_meal": "Lunch",\n')
 
