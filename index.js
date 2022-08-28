@@ -104,8 +104,11 @@ app.get('/', (req, res)=>{
 
 app.post('/meals/kor', (req, res) => {
     const m = kr_curr.getMonth() + 1;
+    // const m = 8;
     const d = kr_curr.getDate();
+    // const d = 31;
     const h = kr_curr.getHours();
+    // const h = 19;
 
     let month = m;
     let date = d;
@@ -130,8 +133,12 @@ app.post('/meals/kor', (req, res) => {
         }
     }
     month = String(month);
+    date = String(date);
     if  (Boolean(month.length == 1)) {
         month = month.padStart(2, '0');
+    }
+    if (Boolean(date.length == 1)) {
+        date = date.padStart(2, '0');
     }
 
     name = month + '_' + date + '_'  + meal + '_kor.json';
@@ -205,9 +212,14 @@ app.post('/meals/eng', (req, res) => {
             }
         }
     }
+
     month = String(month);
+    date = String(date);
     if  (Boolean(month.length == 1)) {
         month = month.padStart(2, '0');
+    }
+    if (Boolean(date.length == 1)) {
+        date = date.padStart(2, '0');
     }
 
     name = month + '_' + date + '_'  + meal + '_eng.json';
