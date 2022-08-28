@@ -165,7 +165,7 @@ app.post('/meals/kor', (req, res) => {
         const jsonData = JSON.parse(file);
         const jsonMeals = jsonData.meal;
         content = (jsonMeals.meal_date + " " + jsonMeals.kind_of_meal + "\n\n" +
-        jsonMeals.title + "\n" + jsonMeals.menu);
+        jsonMeals.title + "\n\n" + jsonMeals.menu);
     } else {
 
     }
@@ -246,7 +246,7 @@ app.post('/meals/eng', (req, res) => {
         const jsonData = JSON.parse(file);
         const jsonMeals = jsonData.meal;
         content = (jsonMeals.meal_date + " " + jsonMeals.kind_of_meal + "\n\n" +
-        jsonMeals.title + "\n" + jsonMeals.menu);
+        jsonMeals.title + "\n\n" + jsonMeals.menu);
     } else {
 
     }

@@ -1,6 +1,7 @@
 import openpyxl
 import codecs
 
+# 건의사항 from 은지 : 이모티콘(밥, 손가락 등), menu 맨 마지막 \n 제거
 
 def replaceToJson(text):
     if text == None:
