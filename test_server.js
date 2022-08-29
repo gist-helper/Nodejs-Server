@@ -17,7 +17,7 @@ const path = require('path');
 const express = require('express'); // require()로 express module 불러옴.
 const { log } = require('console');
 const app = express(); // app 객체에 담음
-const port = 8808;
+const port = 8807;
 
 /*
 app.get() 함수는 정규 표현식, request handler(함수임) 2개를 받음.
@@ -29,11 +29,11 @@ localhost:3000/으로 들어갔을때 콜백함수 실행. :== routing.
 */
 
 // 1. 현재 시간(Locale)
-// const curr = new Date();
-// const utc = curr.getTime() + (curr.getTimezoneOffset() * 60 * 1000);
-// const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
-// const kr_curr = new Date(utc + KR_TIME_DIFF);
-// 
+const curr = new Date();
+const utc = curr.getTime() + (curr.getTimezoneOffset() * 60 * 1000);
+const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
+const kr_curr = new Date(utc + KR_TIME_DIFF);
+
 app.get('/', (req, res)=>{
     res.send("Starbucks with Deung.");
     // res.end('Hello World!?? San?asdfsad');
@@ -103,17 +103,14 @@ app.get('/', (req, res)=>{
 // });
 
 app.post('/meals/kor', (req, res) => {
-    const curr = new Date();
-    const utc = curr.getTime() + (curr.getTimezoneOffset() * 60 * 1000);
-    const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
-    const kr_curr = new Date(utc + KR_TIME_DIFF);
-
+// app.get('/meals/kor', (req, res) => {
     const m = kr_curr.getMonth() + 1;
     // const m = 8;
     const d = kr_curr.getDate();
     // const d = 31;
-    const h = kr_curr.getHours();
-    // const h = 19;
+    // const h = kr_curr.getHours();
+    // const h = 13;
+    // console.log("now hour : " + h);
 
     let month = m;
     let date = d;
@@ -186,16 +183,11 @@ app.post('/meals/kor', (req, res) => {
           ]
         }
       };
-
+    
     res.status(200).send(responseBody);
 });
 
 app.post('/meals/eng', (req, res) => {
-    const curr = new Date();
-    const utc = curr.getTime() + (curr.getTimezoneOffset() * 60 * 1000);
-    const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
-    const kr_curr = new Date(utc + KR_TIME_DIFF);
-
     const m = kr_curr.getMonth() + 1;
     const d = kr_curr.getDate();
     const h = kr_curr.getHours();
