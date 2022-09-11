@@ -125,9 +125,12 @@ app.post('/meals/kor', (req, res) => {
         meal = 'l';
     } else if (Boolean(13 <= h && h < 19)) {
         meal = 'd';
-    } else {
+    } else if (Boolean(19 <= h && h < 24)) {
         meal = 'b';
         date = d + 1;
+    } else {
+        meal = 'b';
+        // date = d + 1;
 
         if (Boolean(date > days[m-1])) {
             month = m + 1;
@@ -210,9 +213,12 @@ app.post('/meals/eng', (req, res) => {
         meal = 'l';
     } else if (Boolean(13 <= h && h < 19)) {
         meal = 'd';
-    } else {
+    } else if (Boolean(19 <= h && h < 24)) {
         meal = 'b';
         date = d + 1;
+    } else {
+        meal = 'b';
+        // date = d + 1;
 
         if (Boolean(date > days[m-1])) {
             month = m + 1;
