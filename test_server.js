@@ -1,14 +1,13 @@
 const fs = require('fs');
 const path = require('path');
 const express = require('express'); // require()로 express module 불러옴.
-const { log } = require('console');
 const app = express(); // app 객체에 담음
 const port = 8807;
-
 
 // 1. 현재 시간(Locale)
 app.get('/', (req, res)=>{
     res.send("Starbucks with Deung.");
+    console.log("test console.log");
     // res.end('Hello World!?? San?asdfsad');
 });
 
