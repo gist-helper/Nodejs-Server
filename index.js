@@ -5,19 +5,21 @@ const { log } = require('console');
 const app = express(); // app 객체에 담음
 const port = 8808;
 
-/* DB 관련*/
-const mysql = require('mysql');  // mysql 모듈 로드
-const conn = {  // mysql 접속 설정
-    host: '127.0.0.1',
-    port: '3306',
-    user: 'root',
-    password: 'mysql 워크벤치 설치할때 설정한 비밀번호',
-    database: 'test'
-};
+
+const sqlite3 = require('sqlite3').verbose();
+
+let db = new sqlite3.Database('./db/my.db', sqlite3.OPEN_READWRITE, (err) => {
+  if (err) {
+      console.error(err.message);
+  } else {
+      console.log('connected to the mydb database.');
+  }
+});
+
 
 app.get('/', (req, res)=>{
-    res.send("Starbucks with Deung.");
-    // res.end('Hello World!?? San?asdfsad');
+    res.send("starbucks with deung.");
+    // res.end('hello world!?? san?asdfsad');
 });
 
 app.post('/meals/kor', (req, res) => {
@@ -68,47 +70,38 @@ app.post('/meals/kor', (req, res) => {
     }
 
     name = month + '_' + date + '_'  + meal + '_kor.json';
-    console.log(name);
 
-    const Dir = path.join(__dirname, 'meals_data', name);
-    var isExist = 1;
-    try {
-        fs.statSync(Dir);
-      } catch (error) {
-      
-          if (error.code === "ENOENT") {
-            isExist = 0; 
-            console.log("파일이 존재하지 않습니다.");
-          }
-        }
+    const dir = path.join(__dirname, 'meals_data', name);
+    const selectQuery = `
+      SELECT menu 
+      from meals 
+      where filename = "${name}"
+    `;
     
-    var content = '';
-    var time_content = ''; 
-    // 17~19 이런거 추가
+    var nowmenu = '';
+    db.all(selectQuery, [], (err, rows) => {
+      if (err) {
+        res.status(200).send("error !!! call SAN");
+        console.log(err);
+      } else {
+      nowmenu = rows[0].menu;
+      console.log('b', nowmenu);
 
-    if(isExist) {
-        const file = fs.readFileSync(Dir, 'utf8');
-        const jsonData = JSON.parse(file);
-        const jsonMeals = jsonData.meal;
-        content = (jsonMeals.meal_date + " " + jsonMeals.kind_of_meal + "\n\n" +
-        jsonMeals.title + "\n\n" + jsonMeals.menu);
-    } else {
-
-    }
-    const responseBody = {
+      const responseBody = {
         version: "2.0",
         template: {
           outputs: [
             {
               simpleText: {
-                text: content
+                text: rows[0].menu
               }
             }
           ]
         }
       };
-
     res.status(200).send(responseBody);
+    }
+  });
 });
 
 app.post('/meals/eng', (req, res) => {
@@ -159,45 +152,38 @@ app.post('/meals/eng', (req, res) => {
     name = month + '_' + date + '_'  + meal + '_eng.json';
     console.log(name);
 
-    const Dir = path.join(__dirname, 'meals_data', name);
-    var isExist = 1;
-    try {
-        fs.statSync(Dir);
-      } catch (error) {
-      
-          if (error.code === "ENOENT") {
-            isExist = 0; 
-            console.log("파일이 존재하지 않습니다.");
-          }
-        }
+    const dir = path.join(__dirname, 'meals_data', name);
+    const selectQuery = `
+    SELECT menu 
+    from meals 
+    where filename = "${name}"
+    `;
+  
+    var nowmenu = '';
+    db.all(selectQuery, [], (err, rows) => {
+      if (err) {
+        res.status(200).send("ERROR !!! call SAN");
+        console.log(err);
+      } else {
+      nowmenu = rows[0].menu;
+      console.log('b', nowmenu);
     
-    var content = '';
-    var time_content = ''; 
-    // 17~19 이런거 추가
-
-    if(isExist) {
-        const file = fs.readFileSync(Dir, 'utf8');
-        const jsonData = JSON.parse(file);
-        const jsonMeals = jsonData.meal;
-        content = (jsonMeals.meal_date + " " + jsonMeals.kind_of_meal + "\n\n" +
-        jsonMeals.title + "\n\n" + jsonMeals.menu);
-    } else {
-
-    }
-    const responseBody = {
+      const responseBody = {
         version: "2.0",
         template: {
           outputs: [
             {
               simpleText: {
-                text: content
+                text: rows[0].menu
               }
             }
           ]
         }
       };
-    
-    res.status(200).send(responseBody);
+
+      res.status(200).send(responseBody);  
+      };
+    });
 });
 
 app.listen(port, ()=>{

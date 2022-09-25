@@ -1,5 +1,3 @@
-//import json
-
 const sqlite3 = require('sqlite3').verbose();
 const fs = require('fs');
 const path = require('path');
@@ -17,20 +15,28 @@ var files = fs.readdirSync(dir);
 
 //cur = db.cursor()
 //btkor = json.load(open('./meals_data/*
-const dropQuery = `
-    DROP TABLE IF EXISTS meals 
-`;
-db.run(dropQuery);
+// const dropQuery = `
+//     DROP TABLE IF EXISTS meals 
+// `;
+
+// const createQuery = `
+//   CREATE TABLE IF NOT EXISTS meals(
+//     id INTEGER PRIMARY KEY AUTOINCREMENT,
+//     title VARCHAR(30),
+// 	    date DATE,
+// 	    kind_of_meal VARCHAR(10),
+// 	    menu VARCHAR(300)
+//   )
+// `;
 
 const createQuery = `
-  CREATE TABLE IF NOT EXISTS meals(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title VARCHAR(30),
-	date DATE,
-	kind_of_meal VARCHAR(10),
-	menu VARCHAR(300)
-  )
+    CREATE TABLE IF NOT EXISTS meals(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        filename VARCHAR(30),
+        menu VARCHAR(500)
+    )
 `;
+
 const temp = `
 	SELECT * from meals
 `;
@@ -52,21 +58,23 @@ db.each(createQuery);
 //	return false;
 //	}
 //	});
+
 for (var i=0; i<files.length; i++) {
 	var name = files[i];
 	if (path.extname(name) == '.json') {
-	const filepath = path.join(dir, name)	
+	const filepath = path.join(dir, name);	
     const file = fs.readFileSync(filepath, 'utf8');
     const m = JSON.parse(file).meal;
 	
 	const insertQuery = `
-		insert into meals values(${i}, "${m.title}", "${m.meal_date}", "${m.kind_of_meal}", "${m.menu}")
+		insert into meals(filename, menu) values("${name}", "${m.menu}")
 	`;
 	console.log(insertQuery);
 	console.log(i);
 	db.run(insertQuery);
-	}	
+	}
 };
+
 //db.run(temp);
 
 //db.all(temp, [], (err, rows) => {
