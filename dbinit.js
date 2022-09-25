@@ -12,9 +12,6 @@ let db = new sqlite3.Database('./db/my.db', sqlite3.OPEN_READWRITE, (err) => {
 
 const dir = path.join(__dirname, 'meals_data');
 var files = fs.readdirSync(dir); 
-
-//cur = db.cursor()
-//btkor = json.load(open('./meals_data/*
 // const dropQuery = `
 //     DROP TABLE IF EXISTS meals 
 // `;
@@ -36,28 +33,12 @@ const createQuery = `
         menu VARCHAR(500)
     )
 `;
-
-const temp = `
-	SELECT * from meals
-`;
+/*
+동기화 문제 있음. table DROP하고 node dbinit.js 하면 table 없다고 뜸.
+한번 더 node 실행하면 정상적으로 insert됨. 그러니 create부분 어디로 옮겨.
+*/
 
 db.each(createQuery);
-
-//files.forEach((name, index) => {
-//	if (path.extname(name) == '.json') {
-//	const filepath = path.join(dir, name)	
-//    const file = fs.readFileSync(filepath, 'utf8');
-//    const m = JSON.parse(file).meal;
-//	
-//	const insertQuery = `
-//		insert into meals values(${m.title}, ${m.meal_date}, ${m.kind_of_meal}, ${m.menu})
-//	`;
-//	console.log(index);
-//	//console.log(insertQuery);	
-//	db.run(insertQuery);
-//	return false;
-//	}
-//	});
 
 for (var i=0; i<files.length; i++) {
 	var name = files[i];
@@ -65,21 +46,16 @@ for (var i=0; i<files.length; i++) {
 	const filepath = path.join(dir, name);	
     const file = fs.readFileSync(filepath, 'utf8');
     const m = JSON.parse(file).meal;
-	
+    
+    temp = m.meal_date + ' ' + m.kind_of_meal + '\n\n' + m.title + '\n\n' + m.menu
 	const insertQuery = `
-		insert into meals(filename, menu) values("${name}", "${m.menu}")
+		insert into meals(filename, menu) values("${name}", "${temp}")
 	`;
 	console.log(insertQuery);
 	console.log(i);
 	db.run(insertQuery);
 	}
 };
-
-//db.run(temp);
-
-//db.all(temp, [], (err, rows) => {
-//	console.log(rows);
-//		});
 
 //db.serialize(() => {
 //    db.each(dropQuery);
