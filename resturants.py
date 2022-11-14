@@ -19,18 +19,31 @@ class meals:
     def __init__(self) -> None:
         self.meal = dish()
         
+excel_path = "./2학생회관.xlsx"
 
-# excel_path = "./2학생회관.xlsx"
+wb = openpyxl.load_workbook(excel_path)
+sh = wb.worksheets[0]
 
-# wb = openpyxl.load_workbook(excel_path)
-# sh = wb.worksheets[0]
+for j in range(3):
+    jsonFile = codecs.open(f'{j}.json', 'w+', 'utf-8')
 
-# for j in range(3):
-    # jsonFile = codecs.open(f'{j}.json', 'w+', 'utf-8')
+    breakfast = meals()
+    
+    breakfast.meal.title="제2학생회관1층"
 
-breakfast = meals()
-breakfast.meal.title="제2학생회관1층"
-breakfast.meal.meal_date="2015-03-14"
-breakfast.meal.kind_of_meal = "조식"
-breakfast.meal.menu="콩밥"
-print(json.dumps(breakfast.__dict__,ensure_ascii=False,cls=ComplexEncoder))
+    mealDate = sh.cell(row=2, column=4).value
+    
+    breakfast.meal.meal_date = mealDate.strftime('%Y-%m-%d')
+    #breakfast.meal.meal_date="2015-03-14"
+    
+    breakfast.meal.kind_of_meal = "조식"
+    
+    menus = ""
+
+    for k in range(3, 13):
+        menus += (sh.cell(row=k, column=4).value) + '\n'
+    #breakfast.meal.menu="콩밥"
+
+    breakfast.meal.menu=menus
+
+    print(json.dumps(breakfast.__dict__,ensure_ascii=False,cls=ComplexEncoder))
