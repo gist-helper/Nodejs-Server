@@ -25,7 +25,7 @@ wb = openpyxl.load_workbook(excel_path)
 sh = wb.worksheets[0]
 
 for j in range(3):
-    jsonFile = codecs.open(f'{j}.json', 'w+', 'utf-8')
+    jsonFile = open(f"./{j}.json", 'w+',encoding='utf-8')
 
     breakfast = meals()
     
@@ -46,4 +46,4 @@ for j in range(3):
 
     breakfast.meal.menu=menus
 
-    print(json.dumps(breakfast.__dict__,ensure_ascii=False,cls=ComplexEncoder))
+    json.dump(breakfast.__dict__,jsonFile,indent=4,ensure_ascii=False,cls=ComplexEncoder)
