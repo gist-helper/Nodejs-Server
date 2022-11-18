@@ -1,6 +1,11 @@
 import openpyxl
 import codecs
 import json
+import re
+
+def SanitizeMenu(menu: str):
+    return re.sub(r"[0-9]","",menu).rstrip()
+
 class ComplexEncoder(json.JSONEncoder):
     def default(self, obj):
         if hasattr(obj, "__dict__"):
@@ -41,7 +46,7 @@ for j in range(3):
     menus = ""
 
     for k in range(3, 13):
-        menus += (sh.cell(row=k, column=4).value) + '\n'
+        menus += SanitizeMenu((sh.cell(row=k, column=4).value)) + '\n'
     #breakfast.meal.menu="콩밥"
 
     breakfast.meal.menu=menus
