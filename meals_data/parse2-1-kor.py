@@ -1,5 +1,6 @@
 import openpyxl
 import codecs
+from datetime import datetime
 
 # 건의사항 from 은지 : 이모티콘(밥, 손가락 등), menu 맨 마지막 \n 제거
 
@@ -20,7 +21,12 @@ sh = wb.worksheets[0]
 for i in range(4, 11):
     for j in range(3):
         mealDate = sh.cell(row=2, column=i).value
-        mealString = mealDate.strftime('%m_%d')
+        try :
+            mealDate.strftime('%Y-%m-%d')
+            mealString = mealDate.strftime('%m_%d')
+        except AttributeError:
+            mealDate = datetime(2022, int(mealDate[0:2]), int(mealDate[4:6]), 00, 00, 00)
+            mealString = mealDate.strftime('%m_%d')
         if j == 0:
             jsonFile = codecs.open(f'{mealString}_b_kor.json', 'w+', 'utf-8')
         elif j == 1:

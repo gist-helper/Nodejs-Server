@@ -25,6 +25,7 @@ for i in range(4, 11):
         jsonFile.write('\t\t"title": "제2학생회관1층",\n')
 
         mealDate = sh.cell(row=2, column=i).value
+        print(type(mealDate))
         jsonFile.write('\t\t' + '"meal_date": ' + '"%s"' %
                        (mealDate.strftime('%Y-%m-%d')) + ",\n")
 

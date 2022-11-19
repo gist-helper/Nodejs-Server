@@ -131,3 +131,8 @@ dist
 
 # Mac OS Finder system file
 .DS_Store
+meal_parser/.DS_Store
+meal_parser_ref/.DS_Store
+
+# IntelliJ file
+.idea/
