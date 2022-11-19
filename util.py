@@ -2,6 +2,8 @@ import re
 import json
 
 def sanitize_menu(menu: str):
+    if menu == None:
+        return ""
     return re.sub(r"[0-9]","",menu).rstrip()
 
 class ComplexEncoder(json.JSONEncoder):

@@ -28,6 +28,6 @@ for column_day in range(4,11):
         meal_wrapper.meal.kind_of_meal = kind_of_meals[row_slot]
         meal_wrapper.meal.menu = menus
 
-        default_name = day.strftime('%m_$d') + slot_filenames_postfix[row_slot]
+        default_name = day.strftime('%m_%d') + slot_filenames_postfix[row_slot]
         jsonFile = open(f"./{default_name}.json", 'w+',encoding='utf-8')
         json.dump(meal_wrapper.__dict__,jsonFile,indent=4,ensure_ascii=False,cls=ComplexEncoder)

@@ -1,2 +1,4 @@
 *.xlsx
 *.json
+*.pyc
+.DS_Store
