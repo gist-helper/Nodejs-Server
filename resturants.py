@@ -1,29 +1,14 @@
 import openpyxl
 import codecs
 import json
-import re
 
-def SanitizeMenu(menu: str):
-    return re.sub(r"[0-9]","",menu).rstrip()
+from meal import MealWrapper
 
-class ComplexEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if hasattr(obj, "__dict__"):
-            return obj.__dict__
-        else:
-            return json.JSONEncoder.default(self, obj)
-class dish:
-    title: str
-    meal_date: str
-    kind_of_meal: str
-    menu: str
+from utils import ComplexEncoder, sanitize_menu
 
-class meals:
-    meal: dish
-
-    def __init__(self) -> None:
-        self.meal = dish()
-        
+# 1학생회관 1층 : 11월3째주메뉴.xlsx
+# 1학생회관 2층 : 주간식단표(2022년11월21일~2022년11월25일식단표).xlsx
+# 2학생회관 1층 : 11월3주.xlsx
 excel_path = "./2학생회관.xlsx"
 
 wb = openpyxl.load_workbook(excel_path)
@@ -32,7 +17,7 @@ sh = wb.worksheets[0]
 for j in range(3):
     jsonFile = open(f"./{j}.json", 'w+',encoding='utf-8')
 
-    breakfast = meals()
+    breakfast = MealWrapper()
     
     breakfast.meal.title="제2학생회관1층"
 
@@ -46,7 +31,7 @@ for j in range(3):
     menus = ""
 
     for k in range(3, 13):
-        menus += SanitizeMenu((sh.cell(row=k, column=4).value)) + '\n'
+        menus += sanitize_menu((sh.cell(row=k, column=4).value)) + '\n'
     #breakfast.meal.menu="콩밥"
 
     breakfast.meal.menu=menus
