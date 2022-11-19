@@ -4,7 +4,7 @@ import json
 def sanitize_menu(menu: str):
     if menu == None:
         return ""
-    return re.sub(r"[0-9]","",menu).rstrip()
+    return menu.rstrip("0123456789 ")
 
 class ComplexEncoder(json.JSONEncoder):
     def default(self, obj):
